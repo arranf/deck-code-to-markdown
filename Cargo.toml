@@ -1,0 +1,21 @@
+[package]
+name = "deck-code-to-markdown"
+version = "0.1.0"
+authors = ["Arran France <arran@arranfrance.com>"]
+edition = "2018"
+keywords = ["Hearthstone", "Markdown"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/arranf/deck-code-to-markdown"
+categories = ["command-line-utilities"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+env_logger = "0.7.1"
+log = "0.4.8"
+deck_codes = "0.2.1"
+paw = "1.0.0"
+reqwest = "0.9.22"
+percent-encoding = "2.1"
+serde = { version = "1.0", features = ["derive"] }
