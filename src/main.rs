@@ -1,3 +1,5 @@
+#[macro_use]
+extern crate log;
 extern crate deck_codes;
 extern crate env_logger;
 extern crate percent_encoding;
@@ -18,14 +20,17 @@ use crate::detailed_deck::DetailedDeck;
 
 #[paw::main]
 fn main(args: paw::Args) -> Result<(), Box<dyn std::error::Error>> {
+    env_logger::init();
     let mut args = args.skip(1);
 
     let deck_code = args
         .next()
         .ok_or_else(|| io::Error::new(io::ErrorKind::Other, "The deck code argument is missing"))?;
-
+    debug!("Decoding deck");
     let deck = decode_deck_code(&deck_code)?;
+    info!("Fetching card info");
     let api_cards = card_info_fetcher::fetch()?;
+    debug!("Matching cards against API response");
     let detailed_deck = CardMatcher::new(api_cards).do_match(&deck)?;
     println!("{}", format_as_markdown(&detailed_deck, deck_code));
     Ok(())

@@ -18,4 +18,5 @@ deck_codes = "0.2.1"
 paw = "1.0.0"
 reqwest = "0.9.22"
 percent-encoding = "2.1"
+indicatif = "0.13.0"
 serde = { version = "1.0", features = ["derive"] }
