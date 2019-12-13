@@ -256,7 +256,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "deck-code-to-markdown"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "custom_error 1.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "deck_codes 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
