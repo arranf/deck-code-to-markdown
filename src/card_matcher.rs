@@ -1,10 +1,10 @@
 use deck_codes::deck::Deck;
+use std::collections::HashMap;
 
 use crate::api_card::ApiCard;
 use crate::deck_item::DeckItem;
 use crate::detailed_deck::DetailedDeck;
-
-use std::collections::HashMap;
+use crate::error::AppError;
 
 // Takes a set of possible HearthStone cards and matches against a decoded deck to produce a rich set of ordered cards
 pub struct CardMatcher {
@@ -23,7 +23,7 @@ impl CardMatcher {
     }
 
     // Takes a deck and returns a set of ordered Cards
-    pub fn do_match(self, deck: &Deck) -> Result<DetailedDeck, Box<dyn std::error::Error>> {
+    pub fn do_match(self, deck: &Deck) -> Result<DetailedDeck, AppError> {
         let match_against = deck.cards();
         let mut deck_items: Vec<DeckItem> = Vec::new();
 

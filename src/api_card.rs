@@ -1,6 +1,6 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct ApiCard {
     #[serde(rename = "cardClass")]
     pub card_class: Option<String>,
@@ -14,7 +14,7 @@ pub struct ApiCard {
     pub art_id: String,
 }
 
-#[derive(Deserialize, Copy, Clone, Debug)]
+#[derive(Deserialize, Serialize, Copy, Clone, Debug)]
 pub enum Rarity {
     #[serde(rename = "LEGENDARY")]
     Legendary,

@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate log;
 extern crate deck_codes;
+extern crate directories;
 extern crate env_logger;
 extern crate percent_encoding;
 extern crate reqwest;
@@ -14,12 +15,14 @@ mod card_info_fetcher;
 mod card_matcher;
 mod deck_item;
 mod detailed_deck;
+mod error;
 
 use crate::card_matcher::CardMatcher;
 use crate::detailed_deck::DetailedDeck;
+use crate::error::AppError;
 
 #[paw::main]
-fn main(args: paw::Args) -> Result<(), Box<dyn std::error::Error>> {
+fn main(args: paw::Args) -> Result<(), AppError> {
     env_logger::init();
     let mut args = args.skip(1);
 
@@ -28,7 +31,7 @@ fn main(args: paw::Args) -> Result<(), Box<dyn std::error::Error>> {
         .ok_or_else(|| io::Error::new(io::ErrorKind::Other, "The deck code argument is missing"))?;
     debug!("Decoding deck");
     let deck = decode_deck_code(&deck_code)?;
-    info!("Fetching card info");
+    info!("Getting card info");
     let api_cards = card_info_fetcher::fetch()?;
     debug!("Matching cards against API response");
     let detailed_deck = CardMatcher::new(api_cards).do_match(&deck)?;
