@@ -7,12 +7,15 @@ use indicatif::ProgressBar;
 use crate::api_card::ApiCard;
 use crate::error::AppError;
 
+const LATEST_URL: &str = "https://api.hearthstonejson.com/v1/latest/";
+const CARDS_URL: &str = "https://api.hearthstonejson.com/v1/latest/enUS/cards.json";
+
 pub fn fetch() -> Result<Vec<ApiCard>, AppError> {
     let pb = ProgressBar::new_spinner();
     pb.enable_steady_tick(120);
     pb.set_message("Fetching card data...");
 
-    let version_res = reqwest::get("https://api.hearthstonejson.com/v1/latest/")?;
+    let version_res = reqwest::get(LATEST_URL)?;
     // Gets the version from the redirected URL, by splitting on slashes in reverse and ignoring the trailing slash
     let version = get_version_from_response(&version_res)?;
 
@@ -42,7 +45,7 @@ pub fn fetch() -> Result<Vec<ApiCard>, AppError> {
 }
 
 pub fn fetch_and_store_data() -> Result<Vec<ApiCard>, AppError> {
-    let mut res = reqwest::get("https://api.hearthstonejson.com/v1/latest/enUS/cards.json")?;
+    let mut res = reqwest::get(CARDS_URL)?;
     debug!("Fetched HS data from {}", res.url().as_str());
     let detailed_cards: Vec<ApiCard> = res.json()?;
     let version_number = get_version_from_response(&res)?;

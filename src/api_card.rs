@@ -46,3 +46,78 @@ impl Default for Rarity {
         Rarity::None
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_legendary_dust_cost() {
+        let card = ApiCard {
+            rarity: Rarity::Legendary,
+            id: 1,
+            name: String::from("Test Card"),
+            art_id: String::from("Unknown"),
+            cost: None,
+            card_class: None,
+        };
+
+        assert_eq!(card.rarity.dust_cost(), 1600);
+    }
+
+    #[test]
+    fn test_epic_dust_cost() {
+        let card = ApiCard {
+            rarity: Rarity::Epic,
+            id: 1,
+            name: String::from("Test Card"),
+            art_id: String::from("Unknown"),
+            cost: None,
+            card_class: None,
+        };
+
+        assert_eq!(card.rarity.dust_cost(), 400);
+    }
+
+    #[test]
+    fn test_rare_dust_cost() {
+        let card = ApiCard {
+            rarity: Rarity::Rare,
+            id: 1,
+            name: String::from("Test Card"),
+            art_id: String::from("Unknown"),
+            cost: None,
+            card_class: None,
+        };
+
+        assert_eq!(card.rarity.dust_cost(), 100);
+    }
+
+    #[test]
+    fn test_common_dust_cost() {
+        let card = ApiCard {
+            rarity: Rarity::Common,
+            id: 1,
+            name: String::from("Test Card"),
+            art_id: String::from("Unknown"),
+            cost: None,
+            card_class: None,
+        };
+
+        assert_eq!(card.rarity.dust_cost(), 40);
+    }
+
+    #[test]
+    fn test_default_dust_cost() {
+        let card = ApiCard {
+            rarity: Rarity::default(),
+            id: 1,
+            name: String::from("Test Card"),
+            art_id: String::from("Unknown"),
+            cost: None,
+            card_class: None,
+        };
+
+        assert_eq!(card.rarity.dust_cost(), 0);
+    }
+}
