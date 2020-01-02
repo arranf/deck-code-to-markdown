@@ -28,12 +28,9 @@ impl CardMatcher {
         let mut deck_items: Vec<DeckItem> = Vec::new();
 
         for deck_card_and_quantity in match_against {
-            match self.cards.get(&deck_card_and_quantity.1) {
-                Some(matching_card) => {
-                    deck_items.push(DeckItem::new(matching_card, deck_card_and_quantity.0))
-                }
-                None => (),
-            };
+            if let Some(matching_card) = self.cards.get(&deck_card_and_quantity.1) {
+                deck_items.push(DeckItem::new(matching_card, deck_card_and_quantity.0))
+            }
         }
         Ok(DetailedDeck::new(deck_items))
     }

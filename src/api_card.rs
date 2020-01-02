@@ -32,10 +32,10 @@ pub enum Rarity {
 impl Rarity {
     pub fn dust_cost(self) -> u16 {
         match self {
-            Rarity::Legendary => 1600,
-            Rarity::Epic => 400,
-            Rarity::Rare => 100,
-            Rarity::Common => 40,
+            Self::Legendary => 1600,
+            Self::Epic => 400,
+            Self::Rare => 100,
+            Self::Common => 40,
             _ => 0,
         }
     }
@@ -43,7 +43,7 @@ impl Rarity {
 
 impl Default for Rarity {
     fn default() -> Self {
-        Rarity::None
+        Self::None
     }
 }
 

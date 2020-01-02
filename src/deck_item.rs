@@ -17,7 +17,7 @@ pub struct DeckItem {
 impl DeckItem {
     pub fn new(card: &ApiCard, quantity: u8) -> Self {
         Self {
-            quantity: quantity,
+            quantity,
             name: card.name.to_owned(),
             id: card.id,
             cost: card.cost.unwrap(),

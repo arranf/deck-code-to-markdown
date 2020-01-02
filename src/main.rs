@@ -1,3 +1,5 @@
+#![warn(clippy::all, clippy::pedantic)]
+
 #[macro_use]
 extern crate log;
 extern crate deck_codes;
@@ -35,17 +37,17 @@ fn main(args: paw::Args) -> Result<(), AppError> {
     let api_cards = card_info_fetcher::fetch()?;
     debug!("Matching cards against API response");
     let detailed_deck = CardMatcher::new(api_cards).do_match(&deck)?;
-    println!("{}", format_as_markdown(&detailed_deck, deck_code));
+    println!("{}", format_as_markdown(&detailed_deck, &deck_code));
     Ok(())
 }
 
-fn format_as_markdown(detailed_deck: &DetailedDeck, deck_code: String) -> String {
+fn format_as_markdown(detailed_deck: &DetailedDeck, deck_code: &str) -> String {
     let table_header = r#"| Mana | Card Name                                                    | Qty  |                            Links                             |
 | :--: | :----------------------------------------------------------- | :--: | :----------------------------------------------------------: |
 "#;
     let mut table_lines = Vec::with_capacity(detailed_deck.deck_items.len() + 4);
     table_lines.push(table_header.to_owned());
-    for card in detailed_deck.deck_items.iter() {
+    for card in &detailed_deck.deck_items {
         let formatted_line = format!(
             "|  {0}  | [{1}]({2}) |  {3}  | [HSReplay]({4}),[Wiki]({5}) |\n",
             card.cost, card.name, card.art_url, card.quantity, card.hs_replay_url, card.wiki_url

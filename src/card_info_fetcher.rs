@@ -20,27 +20,24 @@ pub fn fetch() -> Result<Vec<ApiCard>, AppError> {
     let version = get_version_from_response(&version_res)?;
 
     // Attempt to get cached data
-    match get_data_filename(&version) {
-        Some(path) => {
-            let file_contents_result = &read_to_string(path);
-            match file_contents_result {
-                Ok(file_contents) => {
-                    let api_cards: Vec<ApiCard> = serde_json::from_str(file_contents)?;
-                    pb.finish_and_clear();
-                    Ok(api_cards)
-                }
-                Err(_) => {
-                    let result = fetch_and_store_data();
-                    pb.finish_and_clear();
-                    result
-                }
+    if let Some(path) = get_data_filename(&version) {
+        let file_contents_result = &read_to_string(path);
+        match file_contents_result {
+            Ok(file_contents) => {
+                let api_cards: Vec<ApiCard> = serde_json::from_str(file_contents)?;
+                pb.finish_and_clear();
+                Ok(api_cards)
+            }
+            Err(_) => {
+                let result = fetch_and_store_data();
+                pb.finish_and_clear();
+                result
             }
         }
-        None => {
-            let result = fetch_and_store_data();
-            pb.finish_and_clear();
-            result
-        }
+    } else {
+        let result = fetch_and_store_data();
+        pb.finish_and_clear();
+        result
     }
 }
 
@@ -78,4 +75,9 @@ fn get_data_filename(version_number: &str) -> Option<PathBuf> {
         ),
         None => None,
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
 }
