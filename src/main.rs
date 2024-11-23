@@ -1,15 +1,8 @@
 #![warn(clippy::all, clippy::pedantic)]
 
-#[macro_use]
-extern crate log;
-extern crate deck_codes;
-extern crate directories;
-extern crate env_logger;
-extern crate percent_encoding;
-extern crate reqwest;
-extern crate serde;
-
+use anyhow::Error;
 use deck_codes::decode_deck_code;
+use log::{debug, info};
 use std::io::{self};
 
 mod api_card;
@@ -21,10 +14,9 @@ mod error;
 
 use crate::card_matcher::CardMatcher;
 use crate::detailed_deck::DetailedDeck;
-use crate::error::AppError;
 
 #[paw::main]
-fn main(args: paw::Args) -> Result<(), AppError> {
+fn main(args: paw::Args) -> Result<(), Error> {
     env_logger::init();
     let mut args = args.skip(1);
 
@@ -42,9 +34,9 @@ fn main(args: paw::Args) -> Result<(), AppError> {
 }
 
 fn format_as_markdown(detailed_deck: &DetailedDeck, deck_code: &str) -> String {
-    let table_header = r#"| Mana | Card Name                                                    | Qty  |                            Links                             |
+    let table_header = r"| Mana | Card Name                                                    | Qty  |                            Links                             |
 | :--: | :----------------------------------------------------------- | :--: | :----------------------------------------------------------: |
-"#;
+";
     let mut table_lines = Vec::with_capacity(detailed_deck.deck_items.len() + 4);
     table_lines.push(table_header.to_owned());
     for card in &detailed_deck.deck_items {
@@ -56,6 +48,6 @@ fn format_as_markdown(detailed_deck: &DetailedDeck, deck_code: &str) -> String {
     }
     table_lines.push("\n".to_owned());
     table_lines.push(format!("**Total Dust:**: {}\n", detailed_deck.total_dust));
-    table_lines.push(format!("**Deck Code:** `{}`\n", deck_code));
+    table_lines.push(format!("**Deck Code:** `{deck_code}`\n"));
     table_lines.concat()
 }
